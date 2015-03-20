@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	Hello World!!!
+	Not Returned From Controller!!
 </body>
 </html>

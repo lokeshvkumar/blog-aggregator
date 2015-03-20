@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+  <definition name="common" template="/WEB-INF/layout/classic.jsp">
+    <put-attribute name="footer" value="/WEB-INF/layout/footer.jsp" />
+  </definition>
+  
+  <definition name="index" extends="common">
+	<put-attribute name="title" value="Blogs Aggregator" />    
+    <put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
+    <put-attribute name="current" value="index"/>
+  </definition>
+  
+  <definition name="users" extends="common">
+	<put-attribute name="title" value="Users" />    
+    <put-attribute name="body" value="/WEB-INF/jsp/users.jsp" />
+    <put-attribute name="current" value="users"/>
+  </definition>
+  <!-- After adding definition for users, modify the classic.jsp page to point Users tab to respective url and modify 
+  users.jsp page to populate the data. -->
+  
+  <definition name="user-detail" extends="common">
+	<put-attribute name="title" value="User Details" />    
+    <put-attribute name="body" value="/WEB-INF/jsp/user-detail.jsp" />
+    <put-attribute name="current" value="users"/>
+  </definition>
+  
+  <!-- step 43, added separate page for account. -->
+  <definition name="account" extends="common">
+	<put-attribute name="title" value="User Account" />    
+    <put-attribute name="body" value="/WEB-INF/jsp/user-account.jsp" />
+    <put-attribute name="current" value="account"/>
+  </definition>
+  
+  <definition name="user-register" extends="common">
+	<put-attribute name="title" value="User Registration" />    
+    <put-attribute name="body" value="/WEB-INF/jsp/user-register.jsp" />
+    <put-attribute name="current" value="register"/>
+  </definition>
+  
+  <!-- added for step 29 for login capabilities -->
+  <definition name="login" extends="common">
+	<put-attribute name="title" value="User Login" />    
+    <put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
+    <put-attribute name="current" value="login"/>
+  </definition>
+</tiles-definitions>

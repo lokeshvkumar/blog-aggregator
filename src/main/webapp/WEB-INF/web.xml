@@ -1,12 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
-  <display-name>blog-aggragator</display-name>
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name>blog-aggragator</display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+	</welcome-file-list>
+
+	<!-- As part of step 28 Since order of the filters is relevant, this should 
+		be one of the first filters to get executed in a web application. Next create 
+		spring bean configuration file for security -->
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<!-- Dispatcherservlet creates servlet, which creates beans. Defined in 
+		dispatcher-servlet.xml There is best practice to have some beans elsewhere. 
+		Beans not defined in dispatcher-servlet can be defined in a differemt spring 
+		bean configuration file defined in applicationContext.xml. When you add a 
+		context listener, you will need to define applicationContext.xml in classpath 
+		under web-inf. Why we need another file, since there could be multiple servlets 
+		and contexts. But in a web application, there will be only one service repository 
+		layer, single connection to database which can be pooled. Only presentation 
+		layer is defined in dispatcher-servlet related xml but rest is defined in 
+		applicationContext. -->
+	<!-- Bootstraps the root web application context before servlet initialization -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- step 42, is to force character encoding filyer into the application. Servlet 2.3/2.4 Filter that allows one to specify a character encoding for requests. This is useful because current browsers typically do not set a character encoding even if 
+	specified in the HTML page or form. This filter can either apply its encoding if the request does 
+	not already specify an encoding, or enforce this filter's encoding in any case ("forceEncoding"="true"). 
+	In the latter case, the encoding will also be applied as default response encoding on Servlet 2.4+ containers (although 
+	this will usually be overridden by a full content type set in the view). -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+
+	<servlet>
+		<servlet-name>request-dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!-- Make sure url pattern is mapped to '/', else it will fail to recognize 
+		the jsps within WEB-INF -->
+	<servlet-mapping>
+		<servlet-name>request-dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+		<!-- <url-pattern>/*.jsp</url-pattern> <url-pattern>/*.json</url-pattern> 
+			<url-pattern>/*.xml</url-pattern> -->
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>request-dispatcher</servlet-name>
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+	<!-- <filter> <filter-name>OpenEntityManagerInViewFilter</filter-name> <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class> 
+		<init-param> <param-name>entityManagerFactoryBeanName</param-name> <param-value>emf</param-value> 
+		</init-param> </filter> <filterin-mapping> <filter-name>OpenEntityManagerInViewFilter</filter-name> 
+		<url-pattern>/*</url-pattern> </filter-mapping> -->
+
+	<!-- STEP 43, IS to preventing cross site scripting. For exampl,e register a user, type '<script>$(document).ready(function(){$("body").hide();});</script>' in text field. Save and navigate to
+	users page. Blank page shows up. 
+	Add the following content to the discriptor. But this alone does not sove the problem. Has to be solved on every single page.
+	Include tags from http://java.sun.com/jsp/jstl/core 'for example if prefixed with  c', then use c:out tag to print data as shown below 
+	<c:out value="${user.name}"/>-->
+	<context-param>
+		<param-name>defaultHtmlEscape</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	
 </web-app>
