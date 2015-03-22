@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tile"%>
@@ -14,7 +15,7 @@
 <!-- tiles-extras library is not required in pom, can be removed. -->
 <tile:useAttribute name="current" />
 
-<!DOCTYPE html>
+
 <!-- This mean we use HTML 5 -->
 <html>
 <head>
@@ -26,12 +27,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
-<!-- step 43, jquery validation. add the jquery validation plugin reference to script section. -->
-<script type="text/javascript"  src=""/>
+<!-- step 44, jquery validation. add the jquery validation plugin reference to script section. -->
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js">
+</script>
 
 
-
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><tile:getAsString name="title" /></title>
 </head>
 <body>

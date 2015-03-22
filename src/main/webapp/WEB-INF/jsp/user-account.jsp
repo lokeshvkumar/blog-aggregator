@@ -3,6 +3,7 @@
 <%@ include file="../layout/taglib.jsp"%>
 
 <script type="text/javascript">
+
 <!-- step 39, added to show one active tab on load. -->
 $(document).ready(function(){
 	// Select first tab based on class. Observer 'nav-tabs a:first' character a used to 
@@ -21,7 +22,37 @@ $(document).ready(function(){
 		//next, show the modal form.
 		$("#removeBlog").modal();//modal instead of show
 		//repeast the same steps for users.
+		
+		/* added as part of step 44, form validation using jquery validation */
+		
+		$(".blogForm").validate(
+				{
+					rules: {
+						name: {
+							required: true,
+							minlength: 3
+						},
+						name: {
+							required: true,
+							minlength: 10,
+							url: true
+						},
+						highlight: function(element) {
+							$(element).closest('.form-group')
+									.removeClass('has-success')
+									.addClass('has-error');
+						},
+						unhighlight: function(element) {
+							$(element).closest('.form-group')
+									.removeClass('has-error').addClass(
+											'has-success');
+						}
+					}
+				}		
+		);
+		
 	});
+	
 	
 });
 </script>
@@ -96,15 +127,33 @@ Accessing ${user.blogs} is outside the transaction. To fix this, there are two w
 					<table class="table table-bordered table-hover table-striped">
 						<thead>
 							<tr>
-								<th>Title</th>
-								<th>Link</th>
+							<!-- as part of step 46, changed below headers from title and date to date and item -->
+								<th>Date</th>
+								<th>item</th>
 							</tr>
 						</thead>
 						<tbody>
 							<c:forEach items="${blog.items }" var="item">
 								<tr>
-									<td>${item.title}</td>
-									<td>${item.link}</td>
+								<!-- as part of step 46, changed below headers from title and date to date and item -->
+									<td><c:out value="${item.publishedDate}" /></td>
+									<td>
+									<!-- below lines will open the link in same page. target="_blank' ensures that the
+									link opens in new window -->
+										<strong>
+											<a href="<c:out value="${item.link}"/>" target="_blank">
+												<c:out value="${item.title}"/><!-- just to avoid cross site scripting use c:out -->
+											</a>
+										</strong>
+										<br/>
+										${item.description}
+										
+									
+										<%-- <strong>
+											<a href="<c:out value="${item.link}"/>">${item.link}</a>
+										</strong> --%>
+									</td> 
+									<%-- <td><a href="#" onclick="openLink(${item.link},'${item.link}');">${item.link}</a></td> --%>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -121,7 +170,7 @@ Accessing ${user.blogs} is outside the transaction. To fix this, there are two w
 submission.
 -->
 <!-- cssClass="form-horizontal" was copied in order to have form similar to registration page -->
-<form:form commandName="blog" cssClass="form-horizontal">
+<form:form commandName="blog" cssClass="form-horizontal blogForm">
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

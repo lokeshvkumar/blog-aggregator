@@ -109,4 +109,8 @@ public class UserService {
 	public void remove(int id) {
 		userRepo.delete(id);
 	}
+
+	public User findOne(String userName) {
+		return userRepo.findByName(userName);
+	}
 }

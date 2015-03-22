@@ -5,11 +5,7 @@
 	version="3.0">
 	<display-name>blog-aggragator</display-name>
 	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.htm</welcome-file>
-		<welcome-file>default.html</welcome-file>
-		<welcome-file>default.htm</welcome-file>
+		<welcome-file>/jsp/index.jsp</welcome-file>
 	</welcome-file-list>
 
 	<!-- As part of step 28 Since order of the filters is relevant, this should 
@@ -41,7 +37,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!-- step 42, is to force character encoding filyer into the application. Servlet 2.3/2.4 Filter that allows one to specify a character encoding for requests. This is useful because current browsers typically do not set a character encoding even if 
+	<!-- step 42, is to force character encoding filter into the application. Servlet 2.3/2.4 Filter that allows one to specify a character encoding for requests. This is useful because current browsers typically do not set a character encoding even if 
 	specified in the HTML page or form. This filter can either apply its encoding if the request does 
 	not already specify an encoding, or enforce this filter's encoding in any case ("forceEncoding"="true"). 
 	In the latter case, the encoding will also be applied as default response encoding on Servlet 2.4+ containers (although 
@@ -88,7 +84,7 @@
 		</init-param> </filter> <filterin-mapping> <filter-name>OpenEntityManagerInViewFilter</filter-name> 
 		<url-pattern>/*</url-pattern> </filter-mapping> -->
 
-	<!-- STEP 43, IS to preventing cross site scripting. For exampl,e register a user, type '<script>$(document).ready(function(){$("body").hide();});</script>' in text field. Save and navigate to
+	<!-- STEP 43, IS to preventing cross site scripting. For example register a user, type '<script>$(document).ready(function(){$("body").hide();});</script>' in text field. Save and navigate to
 	users page. Blank page shows up. 
 	Add the following content to the discriptor. But this alone does not sove the problem. Has to be solved on every single page.
 	Include tags from http://java.sun.com/jsp/jstl/core 'for example if prefixed with  c', then use c:out tag to print data as shown below 
@@ -98,5 +94,11 @@
 		<param-value>true</param-value>
 	</context-param>
 	
+	<!-- step 47, new context param added in order to tell the spring application about which profile to choose. In order to make this run on dev, make the following change to
+	run configurations of this application. -->
+	<context-param>
+		<param-name>spring.profiles.default</param-name>
+		<param-value>prod</param-value>
+	</context-param>
 	
 </web-app>

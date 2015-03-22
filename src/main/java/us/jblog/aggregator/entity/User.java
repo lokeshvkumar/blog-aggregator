@@ -3,20 +3,30 @@ package us.jblog.aggregator.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.ManyToAny;
 import org.hibernate.validator.constraints.Email;
 
+import us.jblog.aggregator.annotation.UserNameConstraint;
+
+/*
+ * Entity given a new table name since user is a reserved keyword in some cases
+ * and might not work in some databases.
+ * Also security.xml needs to be modified to point to the new 
+ * user table.
+ * 
+ */
 @Entity
+@Table(name = "app_user")
 public class User {
 
 	@Id
@@ -25,6 +35,8 @@ public class User {
 	
 	//step 42, server side validation
 	@Size(min=1, message="Name must be minimum 3 characters long!")
+	@Column(unique = true)//added as part of step 44. Added annotations to prevent same username creation.
+	@UserNameConstraint(message = "Such User already exists!")
 	private String name;
 	
 	//step 42, server side validation

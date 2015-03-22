@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import us.jblog.aggregator.entity.Blog;
 import us.jblog.aggregator.entity.User;
@@ -93,50 +94,6 @@ public class UserController {
 		return "user-detail";
 	}
 	
-	/**
-	 * this is step 26 to create register form. Create endpoint method along with 
-	 * user-register form mapping in general.xml and required jsp.
-	 * Spring form or html form can be used. Spring form has advantage, as it 
-	 * can be bound to an object. Add jsp form taglib to taglib.jsp.
-	 * Create horizontal form using spring and bootstrap.
-	 * @return
-	 */
-	@RequestMapping(value="/register")
-	public String showRegister(){
-		
-		return "user-register";
-	}
-	
-	/**
-	 * Step 27
-	 * Method above popped up a registration form. We need a method to handle post request
-	 * coming in from same url.
-	 * Grab the User object using ModelAttribute constructed above. 
-	 * Spring will create the User object using the form submitted and apply that 
-	 * as arguement to this post request handler.
-	 */
-	/**
-	 * step 42 - server side validation added to this method. @ModelAttribute annocated further with @Valid
-	 * and validation result captured in arguement BindingResult. Also check if result has errors.
-	 * @param user
-	 * @return
-	 */
-	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public String doRegister(@Valid @ModelAttribute("user") User user, BindingResult bindigResult ){
-		//step 42, additonal checks, same checks added for the blog
-		if(bindigResult.hasErrors()){
-			return "user-register";
-		}
-		
-		userService.save(user);
-		//step 36 is redirect. registration completion status, and refreshing the same page results in re-insert of form submitted.
-		//solution? redirect!!
-		//we return back to the registration form.
-		
-		//return "user-register";//only line was commented to avoid refreshing same page.
-		
-		return "redirect:/register.html?success=true";//use this parameter on user-registration page to alert
-	}
 	
 	
 	/*
@@ -221,4 +178,5 @@ public class UserController {
 		userService.remove(id);
 		return "redirect:/users";
 	}
+	
 }

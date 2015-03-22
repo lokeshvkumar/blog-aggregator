@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Type;
+
 /**
  * Entity implementation class for Entity: Item
  *
@@ -18,11 +20,18 @@ public class Item implements Serializable {
 	@GeneratedValue
 	private Integer id;
 	
+	//changed to clob since only 255 out of the blog allowed, also length extended
+	//to max and make sure to test it with other database.
+	@Lob
+	@Type(type = "org.hibernate.type.StringClobType")
+	@Column(length = Integer.MAX_VALUE)
 	private String description;
 	
 	@Column(name="published_date")
 	private Date publishedDate;
 	
+	//changed to 1000 characters to accomodate lot enough content
+	@Column(length = 1000)
 	private String link;
 	private String title;
 	

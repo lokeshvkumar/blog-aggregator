@@ -17,5 +17,7 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Integer>{//Types refer to the object and the primary key reference
 	
 		List<Item> findByBlog(Blog blog, Pageable pageable);
+		
+		Item findByBlogAndLink(Blog blog, String link);
 	
 }

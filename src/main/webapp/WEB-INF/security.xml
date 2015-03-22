@@ -64,9 +64,9 @@
 			and add another column to the entity .-->
 			
 			<jdbc-user-service data-source-ref="dataSource" 
-			authorities-by-username-query="select user.name, role.name from user join join_user_role 
-			on user.id=join_user_role.id join Role on join_user_role.roleId=role.roleId where user.name=?"
-			users-by-username-query="select name, password, enabled from user where name = ?" />
+			authorities-by-username-query="select app_user.name, role.name from app_user join join_user_role 
+			on app_user.id=join_user_role.id join Role on join_user_role.roleId=role.roleId where app_user.name=?"
+			users-by-username-query="select name, password, enabled from app_user where name = ?" />
 		</authentication-provider>
 	</authentication-manager>
 </beans:beans>

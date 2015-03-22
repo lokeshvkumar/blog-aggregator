@@ -35,6 +35,8 @@ List of constraint violations:[
 	 */
 	@Size(min=3, message="URL must be minimum 3 characters long!")
 	@URL(message="Invalid URL!")
+	
+	@Column(length = 1000)
 	private String url;
 	
 	@ManyToOne

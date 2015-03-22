@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.1.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
@@ -24,7 +28,7 @@
 		create a datasource. This can be referred in EMF decribed above. For production 
 		database the definition will be different. So ideally, add datasource first 
 		followed by EMF definition above. -->
-	<jdbc:embedded-database id="dataSource" type="HSQL"></jdbc:embedded-database> 
+	<!-- <jdbc:embedded-database id="dataSource" type="HSQL"></jdbc:embedded-database>  this configuration moved to database-dev.xml -->
 	
 	<!-- if not embedded, external database can be used as shown below -->
 	<!-- <bean id="dataSource"
@@ -115,5 +119,20 @@
 		for every entity listed in the project -->
 	
 	<!-- step 28, importing security configuration file -->
-	<import resource="security.xml"/>	
+	<import resource="security.xml"/>
+	
+	<!-- step 46, added task namespace in order to enable enable annotation driven task scheduling.
+	Next add a method to blogservice to reloadBlogs-->
+	<task:annotation-driven/>	
+	
+	<!-- step 47, to provide multi environment configuration -->
+	<beans profile="dev">
+	<!-- when in dev mode, we import database-dev.xml -->
+		<import resource="database-dev.xml"/>
+	</beans>
+	
+	<beans profile="prod">
+	<!-- when in production mode, we import database-prod.xml.  -->
+		<import resource="database-prod.xml"/>
+	</beans>
 </beans>
