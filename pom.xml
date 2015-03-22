@@ -14,6 +14,14 @@
 		<spring.security.version>3.2.6.RELEASE</spring.security.version>
 	</properties>
 	<dependencies>
+		<!-- step 45, create a new service to unmarshall rss feeds into java objects. 
+			Added junit 4.x dependency -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>
+		
 		<!-- 4 -->
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
@@ -272,12 +280,31 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>5.2.0.Beta1</version>
 		</dependency>
+		
+		<!-- step 47, added postgres sql driver. Connect to external database than in memory database like hsql. 
+		Also dbcp connection pool. Also changes will be made to use required configuration based on production or
+		development environment. Added new spring bean configuration files. -->
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901-1.jdbc4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
 	</dependencies>
-
 
 	<build>
 		<plugins>
-			<!-- 1 -->
+		<!-- tomcat plugin can be used instead of jetty plugin. Run the application as maven build > goal as tomcat7:run-->
+		<!-- <plugin>
+			<groupId>org.apache.tomcat.maven</groupId>
+			<artifactId>tomcat7-maven-plugin</artifactId>
+			<version>2.2</version>
+		</plugin> -->
+		<!-- 1 -->
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
@@ -302,6 +329,7 @@
 				<artifactId>spring-framework-bom</artifactId>
 				<version>${org.springframework.version}</version>
 				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
